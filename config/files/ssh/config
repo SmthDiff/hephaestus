@@ -1,0 +1,4 @@
+Host smthdiff.com
+	ForwardAgent yes
+Host *.smthdiff.com
+	ForwardAgent yes

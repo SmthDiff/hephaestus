@@ -1,0 +1,8 @@
+---
+:backends: yaml
+:yaml:
+    :datadir: '/vagrant/config'
+:hierarchy:
+    - config
+:merge_behavior: deeper
+:logger: console

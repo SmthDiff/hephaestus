@@ -1,0 +1,9 @@
+.DS_Store
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*~
+
+.vagrant/
+config/puppet/modules/*
