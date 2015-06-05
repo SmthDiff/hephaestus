@@ -53,6 +53,12 @@ Vagrant.configure('2') do |config|
     end
   end
 
+  # updating virtualbox guest additions
+  # must install with 'vagrant plugin install vagrant-vbguest'
+  if Vagrant.has_plugin?("vagrant-vbguest") then
+    config.vbguest.auto_update = true
+  end
+
   # initial shell provisioning (updates, upgrades)
   config.vm.provision 'shell' do |s|
     s.path = 'config/shell/initial-setup.sh'
