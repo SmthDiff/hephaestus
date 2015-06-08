@@ -34,6 +34,12 @@ if [ ! -d /etc/puppet/modules/mysql ]; then
 	echo "Finished adding MySQL Module"
 fi
 
+if [ ! -d /etc/puppet/modules/nodejs ]; then
+	echo "Adding NodeJS Module"
+	puppet module install puppetlabs-nodejs
+	echo "Finished adding NodeJS Module"
+fi
+
 if [ ! -d /etc/puppet/modules/mailcatcher ]; then
 	echo "Adding MailCatcher Module"
 	puppet module install actionjack-mailcatcher
@@ -44,4 +50,17 @@ if [ ! -d /etc/puppet/modules/java ]; then
 	echo "Adding Oracle Java Module"
 	puppet module install 7terminals-java
 	echo "Finished adding Oracle Java Module"
+fi
+
+
+if [ ! -d /etc/puppet/modules/htop ]; then
+	echo "Adding htop Module"
+	puppet module install sund-htop
+	echo "Finished adding htop Module"
+fi
+
+if [ ! -d /etc/puppet/modules/timezone ]; then
+	echo "Adding timezone Module"
+	puppet module install rlenglet-timezone
+	echo "Finished adding timezone Module"
 fi
