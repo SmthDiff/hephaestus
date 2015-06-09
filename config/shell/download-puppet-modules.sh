@@ -54,13 +54,6 @@ if [ ! -d /etc/puppet/modules/java ]; then
 	echo "Finished adding Oracle Java Module"
 fi
 
-
-if [ ! -d /etc/puppet/modules/htop ]; then
-	echo "Adding htop Module"
-	puppet module install sund-htop
-	echo "Finished adding htop Module"
-fi
-
 if [ ! -d /etc/puppet/modules/timezone ]; then
 	echo "Adding timezone Module"
 	puppet module install rlenglet-timezone
