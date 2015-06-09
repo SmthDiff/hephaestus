@@ -64,3 +64,9 @@ if [ ! -d /etc/puppet/modules/timezone ]; then
 	puppet module install rlenglet-timezone
 	echo "Finished adding timezone Module"
 fi
+
+if [ ! -d /etc/puppet/modules/ohmyzsh ]; then
+	echo "Adding Oh-My-ZSH Module"
+	puppet module install acme-ohmyzsh
+	echo "Finished adding Oh-My-ZSH Module"
+fi
