@@ -57,7 +57,7 @@ each( ['apache', 'nginx', 'httpd', 'www-data', 'www-user'] ) |$key| {
 exec { 'dotfiles':
   cwd     => $user_home,
   command => "cp -r /vagrant/config/files/dot/.[a-zA-Z0-9_]* ${user_home}/ \
-              && chown -R ${::ssh_username} ${user_home}/.[a-zA-Z0-9_]* \
+              && chown -R ${::ssh_username}:${::ssh_username} ${user_home}/.[a-zA-Z0-9_]* \
               && cp -r /vagrant/config/files/dot/.[a-zA-Z0-9_]* /root/",
   onlyif  => 'test -d /vagrant/config/files/dot',
   returns => [0, 1],
