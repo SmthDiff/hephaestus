@@ -36,10 +36,10 @@ User[$::ssh_username]
 # copy dot files to ssh user's home directory
 exec { 'dotfiles':
   cwd     => $user_home,
-  command => "cp -r /vagrant/puphpet/files/dot/.[a-zA-Z0-9]* ${user_home}/ \
-              && chown -R ${::ssh_username} ${user_home}/.[a-zA-Z0-9]* \
-              && cp -r /vagrant/puphpet/files/dot/.[a-zA-Z0-9]* /root/",
-  onlyif  => 'test -d /vagrant/puphpet/files/dot',
+  command => "cp -r /vagrant/config/files/dot/.[a-zA-Z0-9_]* ${user_home}/ \
+              && chown -R ${::ssh_username} ${user_home}/.[a-zA-Z0-9_]* \
+              && cp -r /vagrant/config/files/dot/.[a-zA-Z0-9_]* /root/",
+  onlyif  => 'test -d /vagrant/config/files/dot',
   returns => [0, 1],
   require => User[$::ssh_username]
 }
