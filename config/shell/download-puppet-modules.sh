@@ -18,13 +18,13 @@ fi
 
 if [ ! -d /etc/puppet/modules/nginx ]; then
 	echo "Adding Nginx Module"
-	puppet module install puppet-nginx
+	puppet module install puppetlabs-nginx
 	echo "Finished adding Nginx Module"
 fi
 
 if [ ! -d /etc/puppet/modules/php ]; then
 	echo "Adding PHP Module"
-	puppet module install puppet-php
+	puppet module install mayflower-php
 	echo "Finished adding PHP Module"
 fi
 
