@@ -33,14 +33,14 @@ case $::ssh_username {
 
 @user { $::ssh_username:
   ensure     => present,
-  shell      => '/bin/bash',
+  shell      => '/bin/zsh',
   home       => $user_home,
   managehome => $manage_home,
   groups     => ['www-data', 'www-user'],
   require    => [Group['www-data'], Group['www-user'], Package['zsh']],
 }
 
-User[$::ssh_username]
+realize User[$::ssh_username]
 
 each( ['apache', 'nginx', 'httpd', 'www-data', 'www-user'] ) |$key| {
   if ! defined(User[$key]) {
