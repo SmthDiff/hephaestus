@@ -1,0 +1,8 @@
+[user]
+	name = SmthDiff
+	email = admin@smthdiff.com
+[core]
+	autocrlf = input
+	excludesfile = /Users/rst/.gitignore_global
+[push]
+	default = simple
