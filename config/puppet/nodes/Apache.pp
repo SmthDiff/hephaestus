@@ -29,6 +29,6 @@ exec { 'Create apache webroot':
   creates => '/.hephaestus-config/apache-webroot-created',
   require => [
     Group[$webroot_group],
-    #Class['apache']
+    Class['apache']
   ],
 }

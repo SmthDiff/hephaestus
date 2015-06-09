@@ -6,6 +6,10 @@ server:
         - vim
         - nano
         - htop
+    gems:
+        - compass
+        - bootstrap-sass
+        - font-awesome-sass
 synced_folder:
     code:
         source: ~/Code

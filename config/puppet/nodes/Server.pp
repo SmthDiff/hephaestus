@@ -6,16 +6,17 @@ Exec { path => [ '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ] }
 each( $server_values['packages'] ) |$package| {
   if ! defined(Package[$package]) {
     package { $package:
-      ensure => present,
+      ensure => installed,
     }
   }
 }
 
-# add required system users
-each( ['puppet', 'www-data', 'www-user'] ) |$group| {
-  if ! defined(Group[$group]) {
-    group { $group:
-      ensure => present
+each ( $server_values['gems'] ) |$gems| {
+  if ! defined(Package[$gems]) {
+    package { $gems:
+      ensure => installed,
+      provider => 'gem',
+      before => Exec['dotfiles'],
     }
   }
 }
@@ -37,21 +38,10 @@ case $::ssh_username {
   home       => $user_home,
   managehome => $manage_home,
   groups     => ['www-data', 'www-user'],
-  require    => [Group['www-data'], Group['www-user'], Package['zsh']],
+  require    => Package['zsh'],
 }
 
 realize User[$::ssh_username]
-
-each( ['apache', 'nginx', 'httpd', 'www-data', 'www-user'] ) |$key| {
-  if ! defined(User[$key]) {
-    user { $key:
-      ensure  => present,
-      shell   => '/bin/bash',
-      groups  => 'www-data',
-      require => Group['www-data']
-    }
-  }
-}
 
 # copy dot files to ssh user's home directory
 exec { 'dotfiles':
