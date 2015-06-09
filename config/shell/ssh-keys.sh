@@ -2,9 +2,12 @@
 
 VAGRANT_CORE_FOLDER=$(cat '/.hephaestus-config/vagrant-core-folder.txt')
 
+if [[ -f /.hephaestus-config/added-ssh-keys ]]; then
+    exit 0
+fi
 
-if [[ -d ${VAGRANT_CORE_FOLDER}/files/ssh ]]; then
-	echo 'No keys in config/files/ssh'
+if [[ ! -f ${VAGRANT_CORE_FOLDER}/files/ssh/id_rsa || ! -f ${VAGRANT_CORE_FOLDER}/files/ssh/id_rsa.pub || ! -f ${VAGRANT_CORE_FOLDER}/files/ssh/config ]]; then
+	echo 'Insufficient keys/config in config/files/ssh'
 	echo 'Please add id_rsa, id_rsa.pub and config to config/files/ssh and reprovision'
 	exit 0
 fi
@@ -41,3 +44,5 @@ chmod 600 '/home/vagrant/.ssh/config'
 chmod 600 '/home/vagrant/.ssh/authorized_keys'
 
 echo 'Added Vagrant Keys'
+
+touch /.hephaestus-config/added-ssh-keys

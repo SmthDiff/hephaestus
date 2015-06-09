@@ -1,8 +1,10 @@
 #!/bin/bash
 
-echo "Creating Puppet Modules Folder"
-mkdir -p /etc/puppet/modules;
-echo "Finished creating Puppet Modules Folder"
+if [ ! -d /etc/puppet/modules ]; then
+	echo "Creating Puppet Modules Folder"
+	mkdir -p /etc/puppet/modules;
+	echo "Finished creating Puppet Modules Folder"
+fi
 
 if [ ! -d /etc/puppet/modules/apt ]; then
 	echo "Adding Apt Module"

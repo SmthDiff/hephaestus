@@ -1,9 +1,9 @@
 if $apache_values == undef { $apache_values = hiera_hash('apache', false) }
 if $php_values == undef { $php_values = hiera_hash('php', false) }
 
-include ::apache::params
-
 class { 'apache': }
+
+include ::apache::params
 
 $apache_version = '2.2'
 
@@ -29,6 +29,6 @@ exec { 'Create apache webroot':
   creates => '/.hephaestus-config/apache-webroot-created',
   require => [
     Group[$webroot_group],
-    Class['apache']
+    #Class['apache']
   ],
 }
