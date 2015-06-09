@@ -11,7 +11,7 @@ each( ['puppet', 'www-data', 'www-user'] ) |$group| {
   }
 }
 
-case vagrant {
+case $::ssh_username {
   'root': {
     $user_home   = '/root'
     $manage_home = false
@@ -24,7 +24,7 @@ case vagrant {
 
 @user { $::ssh_username:
   ensure     => present,
-  shell      => '/bin/bash',
+  shell      => '/bin/zsh',
   home       => $user_home,
   managehome => $manage_home,
   groups     => ['www-data', 'www-user'],
