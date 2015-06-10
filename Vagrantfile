@@ -35,7 +35,7 @@ Vagrant.configure('2') do |config|
   if Vagrant.has_plugin?('vagrant-hostmanager')
     hosts = Array.new()
 
-    configValues['apache']['vhosts'].each do |i, vhost|
+    configValues['vhosts'].each do |i, vhost|
       hosts.push(vhost['servername'])
 
       if vhost['serveraliases'].is_a?(Array)

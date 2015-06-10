@@ -21,14 +21,13 @@ synced_folder:
         target: /etc/puppet/modules
         owner: root
         group: root
-apache:
-    vhosts:
-        hephaestus:
-            servername: hephaestus.dev
-            setenv:
-                - 'APP_ENV dev'
-            path: /var/www/hephaestus
-            docroot: /var/www/servername/webroot
+vhosts:
+    hephaestus:
+        servername: hephaestus.dev
+        setenv:
+            - 'APP_ENV dev'
+        path: /var/www/hephaestus
+        docroot: /var/www/servername/webroot
 php:
     settings:
         version: '54'

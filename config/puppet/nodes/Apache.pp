@@ -1,11 +1,10 @@
-if $apache_values == undef { $apache_values = hiera_hash('apache', false) }
+if $apache_values == undef { $apache_values = hiera_hash('vhosts', false) }
 if $php_values == undef { $php_values = hiera_hash('php', false) }
-
-class { 'apache': }
 
 include ::apache::params
 
 $apache_version = '2.2'
+$apache_modules = ['php5', 'cgi', 'deflate', 'include', 'rewrite', 'userdir', 'autoindex', 'dir', 'headers', 'negotiation', 'setenvif', 'suexec', 'auth_basic', 'authz_default', 'fcgid', 'perl', 'python', 'authz_groupfile', 'reqtimeout', 'status']
 
 $php_engine    = true
 $php_fcgi_port = '9000'
@@ -31,4 +30,33 @@ exec { 'Create apache webroot':
     Group[$webroot_group],
     Class['apache']
   ],
+}
+
+$apache_settings = {
+  'default_vhost'  => false,
+  'mpm_module'     => $mpm_module,
+  'conf_template'  => $::apache::params::conf_template,
+  'apache_version' => $apache_version
+}
+
+create_resources('class', { 'apache' => $apache_settings })
+
+$default_vhost_directories = {'default' => {
+  'provider'        => 'directory',
+  'path'            => '/var/www/',
+  'options'         => ['Indexes', 'FollowSymlinks', 'MultiViews'],
+  'allow_override'  => ['All'],
+  'require'         => ['all granted'],
+  'files_match'     => {'php_match' => {
+    'provider'   => 'filesmatch',
+    'path'       => '\.php$',
+    'sethandler' => $sethandler_string,
+  }},
+  'custom_fragment' => '',
+}}
+
+each( $apache_modules ) |$module| {
+  if ! defined(Apache::Mod[$module]) {
+    apache::mod { $module: }
+  }
 }

@@ -37,8 +37,8 @@ case $::ssh_username {
   shell      => '/bin/zsh',
   home       => $user_home,
   managehome => $manage_home,
-  groups     => ['www-data', 'www-user'],
-  require    => Package['zsh'],
+  groups     => ['www-data'],
+  require    => [Package['zsh'], Class['apache']],
 }
 
 realize User[$::ssh_username]
