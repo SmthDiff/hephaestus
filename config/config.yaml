@@ -26,8 +26,8 @@ vhosts:
         servername: hephaestus.dev
         setenv:
             - 'APP_ENV dev'
-        path: /var/www/hephaestus
-        docroot: /var/www/servername/webroot
+        path: /var/www/hephaestus.dev
+        docroot: /var/www/hephaestus.dev/www
 php:
     settings:
         version: '54'

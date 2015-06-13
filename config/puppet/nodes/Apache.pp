@@ -39,6 +39,8 @@ $apache_settings = {
   'apache_version' => $apache_version
 }
 
+apache::listen { '7080': }
+
 create_resources('class', { 'apache' => $apache_settings })
 
 $default_vhost_directories = {'default' => {
@@ -54,6 +56,38 @@ $default_vhost_directories = {'default' => {
   }},
   'custom_fragment' => '',
 }}
+
+each( $apache_values ) |$key, $vhost| {
+  exec { "exec mkdir -p ${vhost['docroot']} @ key ${key}":
+    command => "mkdir -m 775 -p ${vhost['docroot']}",
+    user    => $webroot_user,
+    group   => $webroot_group,
+    creates => $vhost['docroot'],
+    require => Exec['Create apache webroot'],
+  }
+
+  notice("The value is: ${vhost}")
+
+  $vhost_merged = merge($vhost, {
+    'port'    => '7080'
+  })
+
+  notice("The value is: ${vhost_merged}")
+
+  create_resources(::apache::vhost, { "${key}" => $vhost_merged })
+
+  $default_vhost_index_file =
+    "${vhost['docroot']}/index.html"
+
+  exec { 'Set index.html contents':
+    command => "echo 'welcome' > ${default_vhost_index_file} && \
+                chmod 644 ${default_vhost_index_file} && \
+                chown ${webroot_user} ${default_vhost_index_file} && \
+                chgrp ${webroot_group} ${default_vhost_index_file}",
+    returns => [0, 1],
+    require => Exec['Create apache webroot'],
+  }
+}
 
 each( $apache_modules ) |$module| {
   if ! defined(Apache::Mod[$module]) {
