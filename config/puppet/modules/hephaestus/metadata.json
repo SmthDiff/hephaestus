@@ -1,0 +1,44 @@
+{
+  "name": "hephaestus-puppet",
+  "version": "1.0",
+  "author": "SmthDiff",
+  "summary": "Puppet module for Hephaestus",
+  "license": "MIT",
+  "source": "git://github.com/smthdiff/puppet-hephaestus.git",
+  "project_page": "https://github.com/smthdiff/puppet-hephaestus",
+  "issues_url": "https://github.com/smthdiff/puppet-hephaestus/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "10.04",
+        "12.04",
+        "14.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "description": "Puppet module for Hephaestus",
+  "dependencies": [
+  ]
+}

@@ -66,10 +66,25 @@ each( $apache_values ) |$key, $vhost| {
     require => Exec['Create apache webroot'],
   }
 
+  if array_true($vhost, 'directories') {
+    $directories_hash   = $vhost['directories']
+    $files_match        = template('hephaestus/apache/files_match.erb')
+    $directories_merged = merge($vhost['directories'], hash_eval($files_match))
+  } else {
+    $directories_merged = []
+  }
+
+  $vhost_custom_fragment = array_true($vhost, 'custom_fragment') ? {
+    true    => file($vhost['custom_fragment']),
+    default => '',
+  }
+
   notice("The value is: ${vhost}")
 
   $vhost_merged = merge($vhost, {
-    'port'    => '7080'
+    'port'            => '7080',
+    'custom_fragment' => $vhost_custom_fragment,
+    'manage_docroot'  => false
   })
 
   notice("The value is: ${vhost_merged}")
