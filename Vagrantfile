@@ -57,6 +57,8 @@ Vagrant.configure('2') do |config|
   # must install with 'vagrant plugin install vagrant-vbguest'
   if Vagrant.has_plugin?("vagrant-vbguest") then
     config.vbguest.auto_update = true
+    config.vbguest.auto_reboot = true
+    config.vbguest.no_remote = true
   end
 
   # initial shell provisioning (updates, upgrades)
@@ -87,7 +89,7 @@ Vagrant.configure('2') do |config|
     puppet.manifests_path = 'config/puppet'
     puppet.manifest_file = 'default.pp'
     puppet.module_path = 'config/puppet/modules'
-    puppet.options = '--verbose --hiera_config /vagrant/config/puppet/hiera.yaml --parser future'
+    puppet.options = '--hiera_config /vagrant/config/puppet/hiera.yaml --parser future'
   end
 
 end

@@ -1,20 +1,15 @@
 if $apache_values == undef { $apache_values = hiera_hash('vhosts', false) }
 if $php_values == undef { $php_values = hiera_hash('php', false) }
 
+include hephaestus
 include ::apache::params
 
 $apache_version = '2.2'
 $apache_modules = ['php5', 'cgi', 'deflate', 'include', 'rewrite', 'userdir', 'autoindex', 'dir', 'headers', 'negotiation', 'setenvif', 'suexec', 'auth_basic', 'authz_default', 'fcgid', 'perl', 'python', 'authz_groupfile', 'reqtimeout', 'status']
 
-$php_engine    = true
-$php_fcgi_port = '9000'
-
 $mpm_module = 'worker'
 
-$sethandler_string = $php_engine ? {
-  true    => "proxy:fcgi://127.0.0.1:${php_fcgi_port}",
-  default => 'default-handler'
-}
+$sethandler_string = "proxy:fcgi://127.0.0.1:9000"
 
 $www_root      = '/var/www'
 $webroot_user  = 'www-data'
@@ -43,20 +38,6 @@ apache::listen { '7080': }
 
 create_resources('class', { 'apache' => $apache_settings })
 
-$default_vhost_directories = {'default' => {
-  'provider'        => 'directory',
-  'path'            => '/var/www/',
-  'options'         => ['Indexes', 'FollowSymlinks', 'MultiViews'],
-  'allow_override'  => ['All'],
-  'require'         => ['all granted'],
-  'files_match'     => {'php_match' => {
-    'provider'   => 'filesmatch',
-    'path'       => '\.php$',
-    'sethandler' => $sethandler_string,
-  }},
-  'custom_fragment' => '',
-}}
-
 each( $apache_values ) |$key, $vhost| {
   exec { "exec mkdir -p ${vhost['docroot']} @ key ${key}":
     command => "mkdir -m 775 -p ${vhost['docroot']}",
@@ -66,41 +47,40 @@ each( $apache_values ) |$key, $vhost| {
     require => Exec['Create apache webroot'],
   }
 
-  if array_true($vhost, 'directories') {
-    $directories_hash   = $vhost['directories']
-    $files_match        = template('hephaestus/apache/files_match.erb')
-    $directories_merged = merge($vhost['directories'], hash_eval($files_match))
-  } else {
-    $directories_merged = []
-  }
-
-  $vhost_custom_fragment = array_true($vhost, 'custom_fragment') ? {
-    true    => file($vhost['custom_fragment']),
-    default => '',
-  }
-
-  notice("The value is: ${vhost}")
+  $default_vhost_directories = {"${key}" => {
+    'path'            => "/var/www/${key}.dev",
+    'options'         => ['Indexes', 'FollowSymlinks', 'MultiViews'],
+    'allow_override'  => ['All'],
+    'require'         => ['all granted'],
+    'files_match'     => {'php_match' => {
+      'path'       => '\.php$',
+      'sethandler' => $sethandler_string,
+      'provider'   => 'filesmatch',
+    }},
+    'provider'        => 'directory',
+  }}
 
   $vhost_merged = merge($vhost, {
+    'directories'     => values_no_error($default_vhost_directories),
     'port'            => '7080',
-    'custom_fragment' => $vhost_custom_fragment,
     'manage_docroot'  => false
   })
-
-  notice("The value is: ${vhost_merged}")
 
   create_resources(::apache::vhost, { "${key}" => $vhost_merged })
 
   $default_vhost_index_file =
     "${vhost['docroot']}/index.html"
 
+  $default_vhost_source_file =
+    '/vagrant/config/puppet/modules/hephaestus/files/webserver_landing.html'
+
   exec { 'Set index.html contents':
-    command => "echo 'welcome' > ${default_vhost_index_file} && \
+    command => "cat ${default_vhost_source_file} > ${default_vhost_index_file} && \
                 chmod 644 ${default_vhost_index_file} && \
                 chown ${webroot_user} ${default_vhost_index_file} && \
                 chgrp ${webroot_group} ${default_vhost_index_file}",
     returns => [0, 1],
-    require => Exec['Create apache webroot'],
+    require => Exec["exec mkdir -p ${vhost['docroot']} @ key ${key}"],
   }
 }
 
