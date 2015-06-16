@@ -22,7 +22,7 @@ synced_folder:
         owner: root
         group: root
 vhosts:
-    hephaestus:
+    hephaestus.dev:
         servername: hephaestus.dev
         setenv:
             - 'APP_ENV dev'

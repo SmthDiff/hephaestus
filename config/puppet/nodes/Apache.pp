@@ -1,5 +1,4 @@
 if $apache_values == undef { $apache_values = hiera_hash('vhosts', false) }
-if $php_values == undef { $php_values = hiera_hash('php', false) }
 
 include hephaestus
 include ::apache::params
@@ -28,10 +27,13 @@ exec { 'Create apache webroot':
 }
 
 $apache_settings = {
-  'default_vhost'  => false,
-  'mpm_module'     => $mpm_module,
-  'conf_template'  => $::apache::params::conf_template,
-  'apache_version' => $apache_version
+  'default_vhost'    => false,
+  'mpm_module'       => $mpm_module,
+  'conf_template'    => $::apache::params::conf_template,
+  'apache_version'   => $apache_version,
+  'server_tokens'    => 'OS',
+  'server_signature' => 'On',
+  'trace_enable'     => 'Off',
 }
 
 apache::listen { '7080': }

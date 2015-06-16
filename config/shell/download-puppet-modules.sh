@@ -20,7 +20,7 @@ fi
 
 if [ ! -d /etc/puppet/modules/nginx ]; then
 	echo "Adding Nginx Module"
-	puppet module install puppetlabs-nginx
+	puppet module install jfryman-nginx
 	echo "Finished adding Nginx Module"
 fi
 
