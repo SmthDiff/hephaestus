@@ -31,8 +31,8 @@ $apache_settings = {
   'mpm_module'       => $mpm_module,
   'conf_template'    => $::apache::params::conf_template,
   'apache_version'   => $apache_version,
-  'server_tokens'    => 'OS',
-  'server_signature' => 'On',
+  'server_tokens'    => 'Prod',
+  'server_signature' => 'Off',
   'trace_enable'     => 'Off',
 }
 
@@ -71,10 +71,10 @@ each( $apache_values ) |$key, $vhost| {
   create_resources(::apache::vhost, { "${key}" => $vhost_merged })
 
   $default_vhost_index_file =
-    "${vhost['docroot']}/index.html"
+    "${vhost['docroot']}/index.php"
 
   $default_vhost_source_file =
-    '/vagrant/config/puppet/modules/hephaestus/files/webserver_landing.html'
+    '/vagrant/config/puppet/modules/hephaestus/files/webserver_landing.php'
 
   exec { 'Set index.html contents':
     command => "cat ${default_vhost_source_file} > ${default_vhost_index_file} && \

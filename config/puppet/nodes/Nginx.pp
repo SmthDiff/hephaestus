@@ -33,9 +33,7 @@ each( $nginx_values ) |$key, $vhost| {
       'X-Forwarded-For $proxy_add_x_forwarded_for',
       'X-Accel-Internal /internal-nginx-static-location'
     ],
-    proxy_read_timeout    => undef,
-    proxy_connect_timeout => undef,
-    proxy_redirect        => undef,
+    proxy_redirect        => 'On',
     require => Class['apache'],
   }
 
