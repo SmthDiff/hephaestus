@@ -4,7 +4,7 @@ include hephaestus
 include ::apache::params
 
 $apache_version = '2.2'
-$apache_modules = ['php5', 'cgi', 'deflate', 'include', 'rewrite', 'userdir', 'autoindex', 'dir', 'headers', 'negotiation', 'setenvif', 'suexec', 'auth_basic', 'authz_default', 'fcgid', 'perl', 'python', 'authz_groupfile', 'reqtimeout', 'status']
+$apache_modules = ['cgi', 'deflate', 'include', 'rewrite', 'userdir', 'autoindex', 'dir', 'headers', 'negotiation', 'setenvif', 'suexec', 'auth_basic', 'authz_default', 'fcgid', 'perl', 'python', 'authz_groupfile', 'reqtimeout', 'status', 'actions']
 
 $mpm_module = 'worker'
 
@@ -31,6 +31,7 @@ $apache_settings = {
   'mpm_module'       => $mpm_module,
   'conf_template'    => $::apache::params::conf_template,
   'apache_version'   => $apache_version,
+  'server_root'      => $www_root,
   'server_tokens'    => 'Prod',
   'server_signature' => 'Off',
   'trace_enable'     => 'Off',
@@ -39,6 +40,15 @@ $apache_settings = {
 apache::listen { '7080': }
 
 create_resources('class', { 'apache' => $apache_settings })
+
+apache::fastcgi::server { 'php':
+  host       => '127.0.0.1:9000',
+  timeout    => 15,
+  flush      => false,
+  faux_path  => '/var/www/php.fcgi',
+  fcgi_alias => '/php.fcgi',
+  file_type  => 'application/x-httpd-php'
+}
 
 each( $apache_values ) |$key, $vhost| {
   exec { "exec mkdir -p ${vhost['docroot']} @ key ${key}":
@@ -49,41 +59,40 @@ each( $apache_values ) |$key, $vhost| {
     require => Exec['Create apache webroot'],
   }
 
-  $default_vhost_directories = {"${key}" => {
-    'path'            => "/var/www/${key}.dev",
-    'options'         => ['Indexes', 'FollowSymlinks', 'MultiViews'],
-    'allow_override'  => ['All'],
-    'require'         => ['all granted'],
-    'files_match'     => {'php_match' => {
-      'path'       => '\.php$',
-      'sethandler' => $sethandler_string,
-      'provider'   => 'filesmatch',
-    }},
-    'provider'        => 'directory',
-  }}
-
-  $vhost_merged = merge($vhost, {
-    'directories'     => values_no_error($default_vhost_directories),
-    'port'            => '7080',
-    'manage_docroot'  => false
-  })
-
-  create_resources(::apache::vhost, { "${key}" => $vhost_merged })
-
-  $default_vhost_index_file =
-    "${vhost['docroot']}/index.php"
-
-  $default_vhost_source_file =
-    '/vagrant/config/puppet/modules/hephaestus/files/webserver_landing.php'
-
-  exec { 'Set index.html contents':
-    command => "cat ${default_vhost_source_file} > ${default_vhost_index_file} && \
-                chmod 644 ${default_vhost_index_file} && \
-                chown ${webroot_user} ${default_vhost_index_file} && \
-                chgrp ${webroot_group} ${default_vhost_index_file}",
-    returns => [0, 1],
-    require => Exec["exec mkdir -p ${vhost['docroot']} @ key ${key}"],
+  apache::vhost { "${key}":
+    port            => '7080',
+    servername      => $vhost['servername'],
+    docroot         => $vhost['docroot'],
+    directories     => {
+      path            => $vhost['docroot'],
+      options         => ['Indexes', 'FollowSymlinks', 'MultiViews', 'Includes'],
+      allow_override  => ['All'],
+      require         => ['all granted'],
+      files_match     => {'php_match' => {
+        'provider'   => 'filesmatch',
+        'path'       => '\.php$',
+        'sethandler' => $sethandler_string,
+      }},
+      provider        => 'directory',
+    },
+    custom_fragment => 'AddType application/x-httpd-php .php',
+    setenv          => $vhost['setenv'],
   }
+
+#   $default_vhost_index_file =
+#     "${vhost['docroot']}/index.php"
+
+#   $default_vhost_source_file =
+#     '/vagrant/config/puppet/modules/hephaestus/files/webserver_landing.php'
+
+#   exec { 'Set index.php contents':
+#     command => "cat ${default_vhost_source_file} > ${default_vhost_index_file} && \
+#                 chmod 644 ${default_vhost_index_file} && \
+#                 chown ${webroot_user} ${default_vhost_index_file} && \
+#                 chgrp ${webroot_group} ${default_vhost_index_file}",
+#     returns => [0, 1],
+#     require => Exec["exec mkdir -p ${vhost['docroot']} @ key ${key}"],
+#   }
 }
 
 each( $apache_modules ) |$module| {

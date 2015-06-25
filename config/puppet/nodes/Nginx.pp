@@ -31,12 +31,12 @@ each( $nginx_values ) |$key, $vhost| {
       'Host $host',
       'X-Real-IP $remote_addr',
       'X-Forwarded-For $proxy_add_x_forwarded_for',
-      'X-Accel-Internal /internal-nginx-static-location'
+      "X-Accel-Internal /internal-nginx-static-location-${key}"
     ],
     require => Class['apache'],
   }
 
-  nginx::resource::location { '/internal-nginx-static-location':
+  nginx::resource::location { "/internal-nginx-static-location-${key}":
     ensure         => present,
     location_alias => $vhost['docroot'],
     internal       => true,

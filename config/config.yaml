@@ -2,7 +2,6 @@ server:
     packages:
         - zsh
         - curl
-        - wget
         - vim
         - nano
         - htop
@@ -27,28 +26,33 @@ vhosts:
         setenv:
             - 'APP_ENV dev'
         docroot: /var/www/hephaestus.dev/www
-php:
-    settings:
-        version: '54'
-    modules:
-        php:
-            - cli
-            - intl
-            - mcrypt
-    ini:
-        display_errors: On
-        error_reporting: '-1'
-        session.save_path: /var/lib/php/session
-        date.timezone: Europe/Zurich
-    fpm_ini:
-        error_log: /var/log/php-fpm.log
-    fpm_pools:
-        phpfpmpool1:
-            ini:
-                prefix: www
-                listen: '127.0.0.1:9000'
-                security.limit_extensions: .php
-                user: www-user
-                group: www-data
-    composer: '1'
-    composer_home: ''
+    novia.dev:
+        servername: novia.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/novia.dev
+php::settings:
+    version: '54'
+    date.timezone: Europe/Zurich
+    display_errors: On
+    error_reporting: '-1'
+    session.save_path: /var/lib/php/session
+    short_open_tag: 'On'
+    expose_php: 'Off'
+php::extensions:
+    intl: {}
+    mcrypt: {}
+    curl: {}
+    gd: {}
+    imap: {}
+    mysql: {}
+    readline: {}
+    sqlite: {}
+    xsl: {}
+    apc:
+        package_prefix: php-
+        settings:
+          apc.stat: 1
+          apc.stat_ctime: 1
+php::fpm: true
+php::composer: true
