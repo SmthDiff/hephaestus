@@ -34,11 +34,11 @@ vhosts:
 php::settings:
     version: '54'
     date.timezone: Europe/Zurich
-    display_errors: On
-    error_reporting: '-1'
+    Php/display_errors: On
+    Php/error_reporting: -1
     session.save_path: /var/lib/php/session
-    short_open_tag: 'On'
-    expose_php: 'Off'
+    Php/short_open_tag: On
+    Php/expose_php: Off
 php::extensions:
     intl: {}
     mcrypt: {}
