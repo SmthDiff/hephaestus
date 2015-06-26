@@ -9,6 +9,11 @@ server:
         - compass
         - bootstrap-sass
         - font-awesome-sass
+    nodepacks:
+        - gulp
+        - bower
+        - yeoman-generator
+        - grunt-cli
 synced_folder:
     code:
         source: ~/Code
@@ -21,18 +26,69 @@ synced_folder:
         owner: root
         group: root
 vhosts:
+    azurite.dev:
+        servername: azurite.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/azurite.dev/public
+    cake.dev:
+        servername: cake.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/cake.dev/app/webroot
+    chewing-gum.dev:
+        servername: chewing-gum.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/chewing-gum.dev/public
+    drupal8.dev:
+        servername: drupal8.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/drupal8.dev
+    games.dev:
+        servername: games.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/games.dev
     hephaestus.dev:
         servername: hephaestus.dev
         setenv:
             - 'APP_ENV dev'
         docroot: /var/www/hephaestus.dev/www
+    laravel.dev:
+        servername: laravel.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/laravel.dev/public
     novia.dev:
         servername: novia.dev
         setenv:
             - 'APP_ENV dev'
         docroot: /var/www/novia.dev
+    noviaflash.dev:
+        servername: noviaflash.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/noviaflash.dev
+    october.dev:
+        servername: october.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/october.dev
+    sunnuhuis.dev:
+        servername: sunnuhuis.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/sunnuhuis.dev/public
+    symfony.dev:
+        servername: symfony.dev
+        setenv:
+            - 'APP_ENV dev'
+        docroot: /var/www/symfony.dev/web
+php::ensure: latest
+php::manage_repos: true
 php::settings:
-    version: '54'
     date.timezone: Europe/Zurich
     Php/display_errors: On
     Php/error_reporting: -1
@@ -47,7 +103,6 @@ php::extensions:
     imap: {}
     mysql: {}
     readline: {}
-    sqlite: {}
     xsl: {}
     apc:
         package_prefix: php-

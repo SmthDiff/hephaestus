@@ -6,7 +6,6 @@ class {'apt':
   always_apt_update => true,
 }
 
-# add packages from config.yaml
 each( $server_values['packages'] ) |$package| {
   if ! defined(Package[$package]) {
     package { $package:

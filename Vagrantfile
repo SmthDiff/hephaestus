@@ -37,13 +37,8 @@ Vagrant.configure('2') do |config|
 
     configValues['vhosts'].each do |i, vhost|
       hosts.push(vhost['servername'])
-
-      if vhost['serveraliases'].is_a?(Array)
-        vhost['serveraliases'].each do |vhost_alias|
-          hosts.push(vhost_alias)
-        end
-      end
     end
+    
     if hosts.any?
       config.hostmanager.enabled           = true
       config.hostmanager.manage_host       = true

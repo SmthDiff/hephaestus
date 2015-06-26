@@ -38,7 +38,7 @@ fi
 
 if [ ! -d /etc/puppet/modules/nodejs ]; then
 	echo "Adding NodeJS Module"
-	puppet module install puppetlabs-nodejs
+	puppet module install willdurand-nodejs
 	echo "Finished adding NodeJS Module"
 fi
 
