@@ -12,7 +12,6 @@ server:
     nodepacks:
         - gulp
         - bower
-        - yeoman-generator
         - grunt-cli
 synced_folder:
     code:
