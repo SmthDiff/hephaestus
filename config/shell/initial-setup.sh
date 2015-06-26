@@ -8,7 +8,7 @@ OS=$(/bin/bash "${VAGRANT_CORE_FOLDER}/shell/os-detect.sh" ID)
 CODENAME=$(/bin/bash "${VAGRANT_CORE_FOLDER}/shell/os-detect.sh" CODENAME)
 RELEASE=$(/bin/bash "${VAGRANT_CORE_FOLDER}/shell/os-detect.sh" RELEASE)
 SOURCES='/etc/apt/sources.list'
-SOURCES_TEMPLATE='/vagrant/config/puppet/modules/hephaestus/files/sources.list'
+SOURCES_TEMPLATE='/vagrant/config/files/apt/sources.list'
 
 if [[ ! -d '/.hephaestus-config' ]]; then
     mkdir '/.hephaestus-config'
@@ -25,7 +25,7 @@ echo "${VAGRANT_CORE_FOLDER}" > '/.hephaestus-config/vagrant-core-folder.txt'
 if [[ ! -f '/.hephaestus-config/initial-setup-apt-get-update' ]]; then
     if [ "${OS}" == 'debian' ] || [ "${OS}" == 'ubuntu' ]; then
         echo 'Running initial-setup apt-get update'
-        #cat ${SOURCES_TEMPLATE} > ${SOURCES}
+        cat ${SOURCES_TEMPLATE} > ${SOURCES}
         apt-get update >/dev/null
         apt-get -y dist-upgrade >/dev/null
         apt-get -y autoremove >/dev/null

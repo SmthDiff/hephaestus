@@ -1,6 +1,5 @@
 if $apache_values == undef { $apache_values = hiera_hash('vhosts', false) }
 
-include hephaestus
 include ::apache::params
 
 $apache_version = '2.2'

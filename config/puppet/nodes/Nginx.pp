@@ -1,6 +1,5 @@
 if $nginx_values == undef { $nginx_values = hiera_hash('vhosts', false) }
 
-include hephaestus
 include ::nginx::params
 
 $www_location  = '/var/www'

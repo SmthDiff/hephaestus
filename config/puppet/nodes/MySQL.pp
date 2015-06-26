@@ -1,7 +1,5 @@
 if $mysql_values == undef { $mysql_values = hiera_hash('vhosts', false) }
 
-include hephaestus
-
 $mysql_settings = {
   root_password           => 'vagrant',
   remove_default_accounts => true,
