@@ -78,21 +78,6 @@ each( $apache_values ) |$key, $vhost| {
     custom_fragment => 'AddType application/x-httpd-php .php',
     setenv          => $vhost['setenv'],
   }
-
-#   $default_vhost_index_file =
-#     "${vhost['docroot']}/index.php"
-
-#   $default_vhost_source_file =
-#     '/vagrant/config/puppet/modules/hephaestus/files/webserver_landing.php'
-
-#   exec { 'Set index.php contents':
-#     command => "cat ${default_vhost_source_file} > ${default_vhost_index_file} && \
-#                 chmod 644 ${default_vhost_index_file} && \
-#                 chown ${webroot_user} ${default_vhost_index_file} && \
-#                 chgrp ${webroot_group} ${default_vhost_index_file}",
-#     returns => [0, 1],
-#     require => Exec["exec mkdir -p ${vhost['docroot']} @ key ${key}"],
-#   }
 }
 
 each( $apache_modules ) |$module| {

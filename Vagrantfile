@@ -8,7 +8,7 @@ Vagrant.configure('2') do |config|
   # Defining which box shall be downloaded
   config.vm.box     = "ubuntu/precise64"
   config.vm.box_url = "ubuntu/precise64"
-  config.vm.hostname = "hephaestus-dev"
+  config.vm.hostname = "hephaestus"
   config.vm.network 'private_network', ip: "192.168.33.101"
 
   # defining default provider as VirtualBox

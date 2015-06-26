@@ -25,7 +25,7 @@ echo "${VAGRANT_CORE_FOLDER}" > '/.hephaestus-config/vagrant-core-folder.txt'
 if [[ ! -f '/.hephaestus-config/initial-setup-apt-get-update' ]]; then
     if [ "${OS}" == 'debian' ] || [ "${OS}" == 'ubuntu' ]; then
         echo 'Running initial-setup apt-get update'
-        cat ${SOURCES_TEMPLATE} > ${SOURCES}
+        #cat ${SOURCES_TEMPLATE} > ${SOURCES}
         apt-get update >/dev/null
         apt-get -y dist-upgrade >/dev/null
         apt-get -y autoremove >/dev/null
