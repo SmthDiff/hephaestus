@@ -26,20 +26,6 @@ each( $nginx_values ) |$key, $vhost| {
     },
     rewrite_www_to_non_www => true,
     proxy                  => 'http://127.0.0.1:7080',
-    proxy_set_header => [
-      'Host $host',
-      'X-Real-IP $remote_addr',
-      'X-Forwarded-For $proxy_add_x_forwarded_for',
-      "X-Accel-Internal /internal-nginx-static-location-${key}"
-    ],
-    require => Class['apache'],
-  }
-
-  nginx::resource::location { "/internal-nginx-static-location-${key}":
-    ensure         => present,
-    location_alias => $vhost['docroot'],
-    internal       => true,
-    vhost          => "${key}",
     require => Class['apache'],
   }
 }
