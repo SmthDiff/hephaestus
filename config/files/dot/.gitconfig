@@ -3,6 +3,4 @@
 	email = admin@smthdiff.com
 [core]
 	autocrlf = input
-	excludesfile = /Users/rst/.gitignore_global
-[push]
-	default = simple
+	excludesfile = ~/.gitignore_global
