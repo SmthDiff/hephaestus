@@ -2,10 +2,6 @@ if $server_values == undef { $server_values = hiera_hash('server', false) }
 
 Exec { path => [ '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ] }
 
-class {'apt':
-  always_apt_update => true,
-}
-
 each( $server_values['packages'] ) |$package| {
   if ! defined(Package[$package]) {
     package { $package:
