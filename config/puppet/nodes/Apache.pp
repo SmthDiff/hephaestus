@@ -42,7 +42,7 @@ create_resources('class', { 'apache' => $apache_settings })
 
 apache::fastcgi::server { 'php':
   host       => '127.0.0.1:9000',
-  timeout    => 15,
+  timeout    => 30,
   flush      => false,
   faux_path  => '/var/www/php.fcgi',
   fcgi_alias => '/php.fcgi',

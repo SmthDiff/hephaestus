@@ -7,12 +7,17 @@ server:
         - htop
     gems:
         - compass
-        - bootstrap-sass
-        - font-awesome-sass
+        - bundler
     nodepacks:
         - gulp
         - bower
         - grunt-cli
+        - foundation-cli
+        - jspm
+        - eslint
+        - parallelshell
+        - npm-build-tools
+        - mkdirp
 synced_folder:
     code:
         source: ~/Code
@@ -25,25 +30,22 @@ synced_folder:
         owner: root
         group: root
 vhosts:
-    laravel.dev:
-        servername: laravel.dev
+    laravel:
+        servername: laravel.devel
         setenv:
             - 'APP_ENV dev'
-        docroot: /var/www/laravel.dev/public
-    october.dev:
-        servername: october.dev
+        docroot: /var/www/laravel.devel/public
+    october:
+        servername: october.devel
         setenv:
             - 'APP_ENV dev'
-        docroot: /var/www/october.dev
-    symfony.dev:
-        servername: symfony.dev
-        setenv:
-            - 'APP_ENV dev'
-        docroot: /var/www/symfony.dev/web
+        docroot: /var/www/october.devel
 php::ensure: latest
 php::manage_repos: true
 php::settings:
     date.timezone: Europe/Zurich
+    Php/upload_max_filesize: 20M
+    Php/post_max_size: 20M
     Php/display_errors: On
     Php/error_reporting: -1
     session.save_path: /var/lib/php/session
@@ -58,10 +60,17 @@ php::extensions:
     mysql: {}
     readline: {}
     xsl: {}
-    apc:
-        package_prefix: php-
+    zendopcache:
+        so_name: opcache
+        provider: pecl
+        header_packages:
+          - php5-dev
         settings:
-          apc.stat: 1
-          apc.stat_ctime: 1
+            opcache.memory_consumption: 128
+            opcache.interned_strings_buffer: 8
+            opcache.max_accelerated_files: 4000
+            opcache.revalidate_freq: 60
+            opcache.fast_shutdown: 1
+            opcache.enable_cli: 1
 php::fpm: true
 php::composer: true

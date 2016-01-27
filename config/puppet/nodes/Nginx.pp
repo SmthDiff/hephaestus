@@ -20,7 +20,7 @@ $nginx_settings = {
 }
 
 each( $nginx_values ) |$key, $vhost| {
-  nginx::resource::vhost { "${key}":
+  nginx::resource::vhost { $vhost['servername']:
     vhost_cfg_prepend => {
       'root' => $vhost['docroot']
     },

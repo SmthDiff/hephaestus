@@ -10,6 +10,7 @@ Vagrant.configure('2') do |config|
   config.vm.box_url = "ubuntu/precise64"
   config.vm.hostname = "hephaestus"
   config.vm.network 'private_network', ip: "192.168.33.101"
+  #config.vm.network "forwarded_port", guest: 80, host: 80
 
   # defining default provider as VirtualBox
   ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
@@ -17,8 +18,8 @@ Vagrant.configure('2') do |config|
   # defining standard VM config for VirtualBox
   config.vm.provider :virtualbox do |virtualbox|
     virtualbox.customize ['modifyvm', :id, '--name', config.vm.hostname]
-    virtualbox.customize ['modifyvm', :id, '--memory', '1024']
-    virtualbox.customize ['modifyvm', :id, '--cpus', '1']
+    virtualbox.customize ['modifyvm', :id, '--memory', '2048']
+    virtualbox.customize ['modifyvm', :id, '--cpus', '2']
     virtualbox.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
   end
 
@@ -38,7 +39,7 @@ Vagrant.configure('2') do |config|
     configValues['vhosts'].each do |i, vhost|
       hosts.push(vhost['servername'])
     end
-    
+
     if hosts.any?
       config.hostmanager.enabled           = true
       config.hostmanager.manage_host       = true
