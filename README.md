@@ -16,11 +16,11 @@
 * PHP-FPM
 * MySQL
 * Mailcatcher
-* NodeJS/NPM (Gulp, Bower, Grunt)
-* RubyGems (Bootstrap-Sass, Font-Awesome-Sass, Compass)
+* NodeJS/NPM (Gulp, Bower, Grunt, Foundation, JSPM, eslint, Parallelshell, mkdirp, npm-build-tools)
+* RubyGems (Compass)
 
 #### config.yaml
-* rename config.yaml.default to config.yaml
+* rename config/config.yaml.default to config/config.yaml
 * add hosts in config/config.yaml
 * add npm/gems/debs
 * change where your code is saved (standard: ~/Code)
@@ -32,6 +32,7 @@
 * Change your username and email in config/files/dot/.gitconfig
 * Add standard gitignores in config/files/dot/.gitignore_global
 * Change Oh-My-ZSH configuration in config/files/dot/.zshrc
+* Change NPM configuration in config/files/dot/.npmrc
 
 ### Have fun!
 
